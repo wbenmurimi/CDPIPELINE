@@ -16,5 +16,10 @@ pipeline {
                 }
             }
         }
+        stage('Install') {
+            steps {
+                sh "mvn package"
+            }
+        }
     }
 }
