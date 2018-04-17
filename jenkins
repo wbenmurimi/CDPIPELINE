@@ -21,5 +21,20 @@ pipeline {
                 sh "mvn package"
             }
         }
+        stage('create image') {
+            steps {
+                sh "sudo docker build --no-cache --rm --tag bwn100/tester:v1 ."
+            }
+        }
+        stage('dockerhub login') {
+            steps {
+                sh "sudo docker login --username=bwn100 --password=BabaYao@2016"
+            }
+        }
+        stage('push image') {
+            steps {
+                sh "sudo docker push bwn100/tester:v1"
+            }
+        }
     }
 }
