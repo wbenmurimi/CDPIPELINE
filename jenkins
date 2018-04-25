@@ -23,17 +23,17 @@ pipeline {
         }
         stage('create image') {
             steps {
-                sh "docker build --no-cache --rm --tag bwn100/tester:v1 ."
+                sh "docker build --no-cache --rm --tag oltranzltd/tester:v1 ."
             }
         }
         stage('dockerhub login') {
             steps {
-                sh "docker login --username=bwn100 --password=BabaYao@2016"
+                sh "docker login --username=oltranzltd --password=5TG-aDb-Pcu-wMR"
             }
         }
         stage('push image') {
             steps {
-                sh "docker push bwn100/tester:v1"
+                sh "docker push oltranzltd/tester:v1"
             }
         }
     }
