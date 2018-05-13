@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    run: pipeline-service
+  name: pipeline-service
+  namespace: staging
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    name: pipeline-port
+    targetPort: 80
+    protocol: TCP
+  selector:
+    app: pipeline-service
+  type: NodePort
+
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  labels:
+    run: pipeline-service
+  name: pipeline-controller
+  namespace: staging
+spec:
+  replicas: 1
+  selector:
+    app: pipeline-service
+  template:
+    metadata:
+      name: pipeline-service
+      labels:
+        app: pipeline-service
+    spec:
+      containers:
+      - image: oltranzltd/tester:v1
+        name: pipeline-service
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: oltranzdocker

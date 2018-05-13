@@ -6,7 +6,7 @@ pipeline {
         maven 'maven3'
     }
     stages {
-        stage('Install') {
+        stage('Install depedencies') {
             steps {
                 sh "mvn clean test"
             }
@@ -16,12 +16,12 @@ pipeline {
                 }
             }
         }
-        stage('package jar') {
+        stage('Create package jar') {
             steps {
                 sh "mvn package"
             }
         }
-        stage('create image') {
+        stage('create & tag image') {
             steps {
                 sh "docker build --no-cache --rm --tag oltranzltd/tester:v1 ."
             }
@@ -31,9 +31,14 @@ pipeline {
                 sh "docker login --username=oltranzltd --password=5TG-aDb-Pcu-wMR"
             }
         }
-        stage('push image') {
+        stage('Docker hub push image') {
             steps {
                 sh "docker push oltranzltd/tester:v1"
+            }
+        }
+        stage('Deployment to k8') {
+            steps {
+                sh "sudo kubectl --kubeconfig ~ubuntu/.kube/config apply -f pipeline.yaml"
             }
         }
     }
