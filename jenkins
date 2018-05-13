@@ -38,7 +38,7 @@ pipeline {
         }
         stage('Deployment to k8') {
             steps {
-                sh "sudo kubectl --kubeconfig ~ubuntu/.kube/config apply -f pipeline.yaml"
+                sh "kubectl --kubeconfig ~ubuntu/.kube/config apply -f pipeline.yaml"
             }
         }
     }
